@@ -14,27 +14,25 @@ class App extends Component {
   };
 
   handleIncrement = (habit) => {
-    // state에 있는 habits 배열을 복사
-    const habits = [...this.state.habits];
-    // 인자로 넘어온 habit 객체가 배열의 몇 번 인덱스인지 확인
-    const index = habits.indexOf(habit);
-    // local habits 배열 안에 인자로 넘어온 habit 객체의 count 를 증가
-    // 이렇게 객체 자체를 수정하면 안됨!!!
-    habits[index].count++;
-    // key, value가 이름이 동일할 때는 하나로 생략 가능
-    // state에서 key가 habits인 value에 local의 habits로 업데이트 해줌
-    // 즉, state 값을 직접 변경 한 것이 아님
+    // habits 배열을 돌면서 인자로 들어온 habit 객체의 id가 같다면
+    // 해당 habit 객체의 count만 변경해줌
+    const habits = this.state.habits.map((item) => {
+      if (item.id === habit.id) {
+        return { ...habit, count: habit.count + 1 };
+      }
+      return item;
+    });
     this.setState({ habits });
   };
 
   handleDecrement = (habit) => {
-    console.log(`handleDecrement function called! ${habit.name}`);
-    const habits = [...this.state.habits];
-    const index = habits.indexOf(habit);
-    // count가 음수가 되지 않도록 처리
-    const count = habits[index].count - 1;
-    // 직접 수정하는 것 좋지 않음.. 추후 수정 ..?????
-    habits[index].count = count < 0 ? 0 : count;
+    const habits = this.state.habits.map((item) => {
+      if (item.id === habit.id) {
+        const count = habit.count - 1;
+        return { ...habit, count: count < 0 ? 0 : count };
+      }
+      return item;
+    });
     this.setState({ habits });
   };
 
@@ -57,9 +55,11 @@ class App extends Component {
   };
 
   handleReset = () => {
-    const habits = [...this.state.habits].map((habit) => {
-      habit.count = 0;
-      return habit;
+    const habits = this.state.habits.map((item) => {
+      if (item.count !== 0) {
+        return { ...item, count: 0 };
+      }
+      return item;
     });
 
     this.setState({ habits });

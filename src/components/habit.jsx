@@ -1,6 +1,15 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
-class Habit extends Component {
+class Habit extends PureComponent {
+  componentDidMount() {
+    console.log(`habit: ${this.props.habit.name} mounted`);
+  }
+
+  // UI에서 해당 컴포넌트가 사라질 때 호출되는 함수
+  componentWillUnmount() {
+    console.log(`habit: ${this.props.habit.name} unmounted`);
+  }
+
   handleIncrement = () => {
     this.props.onIncrement(this.props.habit);
   };
@@ -15,6 +24,7 @@ class Habit extends Component {
 
   render() {
     const { name, count } = this.props.habit;
+    // const { count } = this.props;
 
     return (
       <li className="habit">

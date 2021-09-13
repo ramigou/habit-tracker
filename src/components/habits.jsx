@@ -19,6 +19,9 @@ class Habits extends Component {
     this.props.onAdd(name);
   };
 
+  // 변화되는 부분을 habit.count처럼 별도로 전달해줘야 count를 변화시킬 수 있음
+  // PureComponent에서 habit 객체 안의 count만 변경하면 레퍼런스를 참조해서 동일하다고 판단하여
+  // render 함수를 호출하지 않음 그래서 따로 props를 전달해야 함
   render() {
     return (
       <>
@@ -28,6 +31,8 @@ class Habits extends Component {
             <Habit
               key={habit.id}
               habit={habit}
+              // name={habit.name}
+              // count={habit.count}
               onIncrement={this.handleIncrement}
               onDecrement={this.handleDecrement}
               onDelete={this.handleDelete}

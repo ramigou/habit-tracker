@@ -1,36 +1,34 @@
-import React, { Component } from "react";
+// function component 자동 만들기 rsi
+import React, { memo } from "react";
 
-class HabitAddForm extends Component {
-  // 직접 DOM 요소에 접근하지 않고 연결하고 싶은 요소에 해당 변수를 연결해줌
-  inputRef = React.createRef();
-  formRef = React.createRef();
+// memo를 사용하면 해당 component에 props가 사용되지 않는다면 render 되지 않음
+const HabitAddForm = memo((props) => {
+  const inputRef = React.createRef();
+  const formRef = React.createRef();
 
-  onSubmit = (event) => {
+  const onSubmit = (event) => {
     // refresh 방지
     event.preventDefault();
-    const name = this.inputRef.current.value;
+    const name = inputRef.current.value;
     // input에 무언가가 적혀있다면 onAdd함수에 전달해줌
-    name && this.props.onAdd(name);
+    name && props.onAdd(name);
 
     // add 한 후 입력 칸 초기화 하는 방법
-    // this.inputRef.current.value = "";
+    // inputRef.current.value = "";
     // 정석으로 초기화하는 방법
-    this.formRef.current.reset();
+    formRef.current.reset();
   };
-
-  render() {
-    return (
-      <form ref={this.formRef} className="add-form" onSubmit={this.onSubmit}>
-        <input
-          ref={this.inputRef}
-          type="text"
-          className="add-input"
-          placeholder="Type your habits"
-        ></input>
-        <button className="add-button">Add</button>
-      </form>
-    );
-  }
-}
+  return (
+    <form ref={formRef} className="add-form" onSubmit={onSubmit}>
+      <input
+        ref={inputRef}
+        type="text"
+        className="add-input"
+        placeholder="Type your habits"
+      ></input>
+      <button className="add-button">Add</button>
+    </form>
+  );
+});
 
 export default HabitAddForm;
